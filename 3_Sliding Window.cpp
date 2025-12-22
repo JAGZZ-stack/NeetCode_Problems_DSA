@@ -39,3 +39,40 @@ public:
 // TC : O(nums.size())
 // SC : O(1)
 
+2. Sliding Window Maximum
+
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        int left = 0;
+        int right = 0;
+        deque<int> deque; // keep the indices of the elements in the decreasing order
+        vector<int> maxList;
+
+        while(right < nums.size()) {
+            while(!deque.empty() && nums[deque.back()] < nums[right]) {
+                deque.pop_back();
+            }
+
+            deque.push_back(right);
+
+            if(right >= k) {
+                if(!deque.empty() && deque.front() == left) {
+                    deque.pop_front();
+                }
+                left++;
+            }
+
+            if(right - left + 1 == k) {
+                maxList.push_back(nums[deque.front()]);
+            }
+
+            right++;
+        }
+        return maxList;
+    }
+};
+
+// TC : O(nums.size())
+// SC : O(k); // The deque stores atmost k elements. We can ignore considering the space for maxList
+
