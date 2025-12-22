@@ -8,7 +8,7 @@
     // Step 4 : Increment the right marker.
 // Return the solution in the required format
 
-1. Maximum Average Subarray.
+Problem 1. Maximum Average Subarray.
 
 class Solution {
 public:
@@ -39,7 +39,7 @@ public:
 // TC : O(nums.size())
 // SC : O(1)
 
-2. Sliding Window Maximum
+Problem 2. Sliding Window Maximum
 
 class Solution {
 public:
@@ -75,4 +75,41 @@ public:
 
 // TC : O(nums.size())
 // SC : O(k); // The deque stores atmost k elements. We can ignore considering the space for maxList
+
+Problem 3. First Negative Number of each subarray.
+    
+class Solution {
+public:
+    vector<int> solve(vector<int>& nums, int k) {
+        int left = 0; 
+        int right = 0;
+        
+        deque<int> deque;
+        vector<int> list;
+
+        while(right < nums.size()) {
+            if(nums[right] < 0) {
+                deque.push_back(right);
+            }
+
+            if(right >= k) {
+                if(!deque.empty() && deque.front() == left) {
+                    deque.pop_front();
+                }
+                left++;
+            }
+
+            if(right - left + 1 == k) {
+                list.push_back(nums[deque.front()]);
+            }
+            
+            right++;
+        }
+        return list;
+    }
+};
+
+// TC : O(nums.size())
+// SC : O(k); // The deque stores atmost k elements. We can ignore considering the space for maxList
+
 
