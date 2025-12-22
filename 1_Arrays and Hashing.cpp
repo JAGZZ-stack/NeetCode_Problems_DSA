@@ -66,4 +66,41 @@ public:
 TC : O(nums.size())
 SC : O(nums.size())
 
+3. Valid Anagram
+// https://leetcode.com/problems/valid-anagram/description/
 
+Input: s = "anagram", t = "nagaram"
+Output: true
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.length() != t.length()) return false;
+
+        unordered_map<char, int> map;
+        for(char c : s) {
+            map[c]++;
+        }
+
+        int countDistinct = map.size();
+
+        for(char c : t) {
+            if(map.find(c) == map.end()) {
+                return false;
+            } else {
+                map[c]--;
+                if(map[c] == 0) countDistinct--;
+            }
+        }
+        if(countDistinct == 0) return true;
+        return false;
+    }
+};
+
+// Three important things to ensure a valid anagram:
+// 1. Lengths should be equal
+// 2. No characters should be uncommon
+// 3. Counts should be the same
+
+TC : O(s.size() * t.size())
+SC : O(countDistinct)
