@@ -72,6 +72,11 @@ SC : O(nums.size())
 Input: s = "anagram", t = "nagaram"
 Output: true
 
+// Three important things to ensure a valid anagram:
+// -- Lengths should be equal
+// -- No characters should be uncommon
+// -- Counts should be the same
+
 class Solution {
 public:
     bool isAnagram(string s, string t) {
@@ -97,10 +102,65 @@ public:
     }
 };
 
-// Three important things to ensure a valid anagram:
-// 1. Lengths should be equal
-// 2. No characters should be uncommon
-// 3. Counts should be the same
+// TC : O(s.size() + t.size())
+// SC : O(countDistinct)
 
-TC : O(s.size() * t.size())
-SC : O(countDistinct)
+4. Two Sum (Returning the pair of indices)
+// https://leetcode.com/problems/two-sum/submissions/1862279977/
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> map;
+        
+        for(int i = 0; i < nums.size(); i++) {
+            int remaining = target - nums[i];
+
+            if(map.find(remaining) != map.end()) {
+                return {map[remaining], i};
+            }
+
+            map[nums[i]] = i;
+        }
+        return {};
+    }
+};
+
+// TC : O(nums.size())
+// SC : O(nums.size())
+
+5. Longest Common Prefix
+// https://leetcode.com/problems/longest-common-prefix/description/
+
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+    
+// Vertical scanning Approach :
+// -- Take the first string as a reference.
+// -- Compare characters column-wise, stop at the first mismatch.
+
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        for(int i = 0; i < strs[0].size(); i++) {
+            char curr = strs[0][i]; // 0 - first string. 
+                                    // 1 - ith char of that string
+
+            for(int j = 1; j < strs.size(); j++) {
+                // Case 1 : If i is greater than the current string length.
+                if(i >= strs[j].size()) {
+                    return strs[0].substr(0, i);
+                }
+
+                // Case 2 : If the characters do not match.
+                if(curr != strs[j][i]) {
+                    return strs[0].substr(0, i);
+                }
+            }
+        }
+        return strs[0];
+    }
+};
+
+// TC : O(strs[0].size() * strs.size());
+// SC : O(1)
