@@ -18,8 +18,8 @@ public:
     }
 }; 
 
-TC : O(nums.size())
-SC : O(2 * nums.size()) // O(nums.size());
+// TC : O(nums.size())
+// SC : O(2 * nums.size()) // O(nums.size());
 
 2. Contains Duplicates
 // https://leetcode.com/problems/contains-duplicate/description/
@@ -69,8 +69,8 @@ SC : O(nums.size())
 3. Valid Anagram
 // https://leetcode.com/problems/valid-anagram/description/
 
-Input: s = "anagram", t = "nagaram"
-Output: true
+// Input: s = "anagram", t = "nagaram"
+// Output: true
 
 // Three important things to ensure a valid anagram:
 // -- Lengths should be equal
@@ -132,8 +132,8 @@ public:
 5. Longest Common Prefix
 // https://leetcode.com/problems/longest-common-prefix/description/
 
-Input: strs = ["flower","flow","flight"]
-Output: "fl"
+// Input: strs = ["flower","flow","flight"]
+// Output: "fl"
     
 // Vertical scanning Approach :
 // -- Take the first string as a reference.
