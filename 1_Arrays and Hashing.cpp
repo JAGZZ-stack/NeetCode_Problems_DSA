@@ -1,4 +1,4 @@
-1. Concatenation of Array.
+Problem 1. Concatenation of Array.
 // https://leetcode.com/problems/concatenation-of-array/
 
 // Input: nums = [1,2,1]
@@ -21,7 +21,7 @@ public:
 // TC : O(nums.size())
 // SC : O(2 * nums.size()) // O(nums.size());
 
-2. Contains Duplicates
+Problem 2. Contains Duplicates
 // https://leetcode.com/problems/contains-duplicate/description/
 
 // Input: nums = [1,2,3,1]
@@ -66,7 +66,7 @@ public:
 TC : O(nums.size())
 SC : O(nums.size())
 
-3. Valid Anagram
+Problem 3. Valid Anagram
 // https://leetcode.com/problems/valid-anagram/description/
 
 // Input: s = "anagram", t = "nagaram"
@@ -105,7 +105,7 @@ public:
 // TC : O(s.size() + t.size())
 // SC : O(countDistinct)
 
-4. Two Sum (Returning the pair of indices)
+Problem 4. Two Sum (Returning the pair of indices)
 // https://leetcode.com/problems/two-sum/submissions/1862279977/
 
 class Solution {
@@ -129,7 +129,7 @@ public:
 // TC : O(nums.size())
 // SC : O(nums.size())
 
-5. Longest Common Prefix
+Problem 5. Longest Common Prefix
 // https://leetcode.com/problems/longest-common-prefix/description/
 
 // Input: strs = ["flower","flow","flight"]
