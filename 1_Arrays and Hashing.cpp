@@ -226,3 +226,63 @@ public:
 
 // TC : O(n * k log k)
 // SC : O(n * k) (Assuming total number of strings is n and each string has k characters)
+
+Problems 8. Majority Element (The element which appears more than n/2 times)
+// https://leetcode.com/problems/majority-element/
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        unordered_map<int, int> map;
+
+        for(int val : nums) {
+            map[val]++;
+            if(map[val] > nums.size()/2) {
+                return val;
+            }
+        }
+        return 0;
+    }
+};
+
+// TC : O(nums.size())
+// SC : O(nums.size())
+
+// Revisit/study during Leisure time
+Problem 9 : Design HashMap // Rarely asked in interviews
+Problem 10 : Design HashSet // Rarely asked in interviews
+Problem 11 : Sort an array // Only study the STL inbuilt function as of now
+Problem 12 : Sort Colors // Only study the STL inbuilt function as of now
+
+Problem 13 : Top k frequent Elements LeetCode
+// https://leetcode.com/problems/top-k-frequent-elements/submissions/1863622360/
+
+// Input: nums = [1,1,1,2,2,3], k = 2
+// Output: [1,2]
+    
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> map;
+        for(int val : nums) {
+            map[val]++;
+        }
+
+        vector<pair<int, int>> arr;
+        for (const auto& p : map) {
+            arr.push_back({p.second, p.first});
+        }
+
+        sort(arr.rbegin(), arr.rend());
+
+        vector<int> res;
+        for (int i = 0; i < k; ++i) {
+            res.push_back(arr[i].second);
+        }
+        return res;    
+    }
+};
+
+// TC : O(n log n)
+// SC : O(n)
+
