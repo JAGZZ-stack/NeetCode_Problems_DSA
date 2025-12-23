@@ -112,4 +112,46 @@ public:
 // TC : O(nums.size())
 // SC : O(k); // The deque stores atmost k elements. We can ignore considering the space for maxList
 
+5. Count the occurences of the anagrams 
 
+// Input : text = "forxxorfxdofr", pattern = "for"
+// Output : 3
+
+class Solution {
+  public:
+    int search(string &pat, string &text) {
+        // code here
+        int k = pat.size();
+        int left = 0; int right = 0;
+        unordered_map<char, int> charFreq;
+        for(char c : pat) charFreq[c]++;
+        int countDistinct = charFreq.size();
+        int anagramOccurences = 0;
+        
+        while(right < text.size()) {
+            if(charFreq.find(text[right]) != charFreq.end()) {
+                charFreq[text[right]]--;
+                if(charFreq[text[right]] == 0) countDistinct--;
+            }
+            
+            if(right >= k) {
+               if(charFreq.find(text[left]) != charFreq.end()) {
+                   charFreq[text[left]]++;
+                   if(charFreq[text[left]] == 1) countDistinct++;
+               } 
+               left++;
+            }
+            
+            if(right - left + 1 == k) {
+                if(countDistinct == 0) {
+                    anagramOccurences++;
+                }
+            }
+            right++;
+        }
+        return anagramOccurences;
+    }
+};
+
+// TC : O(pat.size() + text.size())
+// SC : O(pat.size())
