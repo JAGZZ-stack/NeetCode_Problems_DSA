@@ -194,3 +194,35 @@ public:
 
 // TC : O(nums.size())
 // SC : O(1)
+
+Problem 7. Group Anagrams
+// https://leetcode.com/problems/group-anagrams/
+
+// Input: strs = ["eat","tea","tan","ate","nat","bat"]
+// Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+// CUE : Group of Anagrams = Hashmap[sort[word]]
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, vector<string>> map;
+
+        for(string s : strs) {
+            string word = s;
+            sort(word.begin(), word.end());
+
+            map[word].push_back(s);
+        }
+
+        vector<vector<string>> result;
+
+        for(auto it : map) {
+            result.push_back(it.second);
+        }
+
+        return result;
+    }
+};
+
+// TC : O(n * k log k)
+// SC : O(n * k) (Assuming total number of strings is n and each string has k characters)
