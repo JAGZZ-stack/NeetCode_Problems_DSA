@@ -254,12 +254,13 @@ Problem 10 : Design HashSet // Rarely asked in interviews
 Problem 11 : Sort an array // Only study the STL inbuilt function as of now
 Problem 12 : Sort Colors // Only study the STL inbuilt function as of now
 
-Problem 13 : Top k frequent Elements LeetCode
+Problem 13 : Top k frequent Elements
 // https://leetcode.com/problems/top-k-frequent-elements/submissions/1863622360/
 
 // Input: nums = [1,1,1,2,2,3], k = 2
 // Output: [1,2]
-    
+
+// Cue : "Map the count, flip the pair, sort the air."
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
