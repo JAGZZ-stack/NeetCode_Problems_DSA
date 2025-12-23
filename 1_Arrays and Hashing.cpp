@@ -164,3 +164,33 @@ public:
 
 // TC : O(strs[0].size() * strs.size());
 // SC : O(1)
+
+Problem 6. Remove Element - LeetCode
+https://leetcode.com/problems/remove-element/submissions/1863586727/
+
+// Two Requirements :
+// -- Array should be modified in such a way that the first k elements do not contain the "val"
+// -- Return total number of "non-val" elements.
+
+// Approach :
+// Two Pointers 
+// (i -> representing the index where the next non-target element should be placed)
+// (j -> for array traversal)
+
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int i = 0;
+
+        for(int j = 0; j < nums.size(); j++) {
+            if(nums[j] != val) {
+                nums[i] = nums[j];
+                i++;
+            }
+        }
+        return i;
+    }
+};
+
+// TC : O(nums.size())
+// SC : O(1)
