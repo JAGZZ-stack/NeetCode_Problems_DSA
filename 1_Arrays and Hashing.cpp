@@ -287,3 +287,60 @@ public:
 // TC : O(n log n)
 // SC : O(n)
 
+Problem 14 : Encode and Decode Strings
+
+class Solution {
+public:
+    string encode(vector<string>& strs) {
+        string res;
+        for(string s : strs) {
+            for(char c : s) {
+                res.push_back(c);
+            }
+            res.push_back((char)0xFFFFFF);
+        }
+        return res;
+    } // TC : O(strs.size() * k) // SC : O(1)
+    
+    vector<string> decode(string s) {
+        vector<string> res;
+        string curr;
+
+        for(char c : s) {
+            if(c == (char)0xFFFFFF) {
+                res.push_back(curr);
+                curr = {};
+            } else {
+                curr.push_back(c);
+            }
+        }
+        return res;
+    } // TC : O(s.size()) // SC : O(s.size())
+};
+
+Problem 21. Subarray Sum Equals K // (Assume the input might contain negative numbers also)
+// Prefix Sum + Hashmap
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        unordered_map<int, int> seen;
+        seen[0] = 1;
+
+        int prefix = 0;
+        int totalSubarrays = 0;
+
+        for(int val : nums) {
+            prefix += val; 
+
+            int need = prefix - k;
+
+            if (seen.find(need) != seen.end()) {
+                totalSubarrays += seen[need];
+            }
+
+            seen[prefix]++;
+        }
+
+        return totalSubarrays;
+    }
+};
