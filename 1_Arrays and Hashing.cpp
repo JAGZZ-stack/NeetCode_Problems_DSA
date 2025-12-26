@@ -318,6 +318,61 @@ public:
     } // TC : O(s.size()) // SC : O(s.size())
 };
 
+======================================================================================================================
+// Prefix Sum and Difference Array concepts.
+void prefixSum(const vector<int>& nums, int k) {
+    vector<int> prefixSum(nums.size());
+    
+    prefixSum[0] = nums[0];
+    for(int i = 1; i < nums.size(); i++) {
+        prefixSum[i] = prefixSum[i-1] + nums[i];
+    }
+    
+    while(k--) {
+        int l, r; // Check if this is 1 or 0 based to use accordingly. Also, look at the constraints before accessing them to avoid out of bounds
+        cin >> l >> r; 
+        
+        int subarraySum = prefixSum[r];
+        if(l > 0) 
+            subarraySum -= prefixSum[l-1];
+    }
+} // TC : O(N), SC : O(1)
+
+void differenceArray(const vector<int>& nums, int k, int x) {
+    vector<int> differenceArray(nums.size());
+    
+    differenceArray[0] = nums[0];
+    for(int i = 1; i < nums.size(); i++) {
+        differenceArray[i] = nums[i] - nums[i-1];
+    }
+    
+    while(k--) {
+        int l, r; // Check if this is 1 or 0 based to use accordingly. Also, look at the constraints before accessing them to avoid out of bounds
+        cin >> l >> r;
+        
+        differenceArray[l] += x;
+        if(r + 1 < nums.size()) 
+            differenceArray[r+1] -= x;
+    }
+    
+    // Calculate prefixSum
+    vector<int> prefixSum(nums.size());
+
+    prefixSum[0] = differenceArray[0];
+    for(int i = 1; i < nums.size(); i++) {
+        prefixSum[i] = prefixSum[i-1] + differenceArray[i];
+    }
+    
+    for(int i = 0; i < prefixSum.size(); i++) {
+        cout << prefixSum[i] << " ";
+    }
+    
+    cout << endl;
+} // TC : O(N + K); SC : O(N)
+
+=========================================================================================================================
+
+
 Problem 21. Subarray Sum Equals K // (Assume the input might contain negative numbers also)
 // Prefix Sum + Hashmap
 class Solution {
