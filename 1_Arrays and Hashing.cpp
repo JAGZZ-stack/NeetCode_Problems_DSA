@@ -303,6 +303,50 @@ public:
 // TC : O(rows * columns)
 // SC : O(rows * columns)
 
+6. Longest Consecutive Sequence
+// https://leetcode.com/problems/longest-consecutive-sequence/
+
+Input: nums = [100,4,200,1,3,2]
+Output: 4
+Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
+
+// Brute Force Approach :
+// Consider each number as a start of the sequence, calculate the sequence length and return the longest.
+
+// Optimised Approach (Hashset) :
+// Cue - currNum and currStreak
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        // Step 1: Build the set for O(1) lookups
+        unordered_set<int> set(nums.begin(), nums.end()); // This set stores every unique number from the input array
+
+        int longest = 0;
+        for(int num : set) {
+            // Only proceed if that number is the start of the sequence
+            if(!set.count(num-1)) {
+                int currNum = num;
+                int currentStreak = 1;
+
+                while (set.count(currNum + 1)) {
+                    currNum += 1;
+                    currentStreak += 1;
+                }
+
+                longest = max(longest, currentStreak);
+            } // else skip it as that number is not the start of the sequence.
+
+        }
+        return longest;
+    }
+};
+
+// TC : O(N) (for set creation) + 
+//      O(N) (for 'for' loop) + 
+//      O(N) (for 'while' loop as while loop runs only N times across the entire program)
+
+// SC : O(N)
+
 Sorting + Hashmap Based Problems : 
 
 1. Group Anagrams
@@ -536,41 +580,7 @@ public:
 // TC : O(n)
 // SC : O(n)
 
-Problem 18. Longest Consecutive Sequence
-// Input: nums = [100,4,200,1,3,2]
-// Output: 4
-// Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
 
-class Solution {
-public:
-    int longestConsecutive(vector<int>& nums) {
-        // Step 1: Build the set for O(1) lookups
-        unordered_set<int> s(nums.begin(), nums.end()); // This set stores every unique number from the input array
-        int longest = 0;
-
-        for(int num : s) {
-            if(s.find(num-1) == s.end()) {
-                int currNum = num;
-                int currentStreak = 1;
-
-                while (s.find(currNum + 1) != s.end()) {
-                    currNum += 1;
-                    currentStreak += 1;
-                }
-
-                longest = max(longest, currentStreak);
-            } // else skip it as that number is not the start of the sequence.
-
-        }
-        return longest;
-    }
-};
-
-// TC : O(N) (for set creation) + 
-//      O(N) (for 'for' loop) + 
-//      O(N) (for 'while' loop as while loop runs only N times across the entire program)
-
-// SC : O(N)
 
 Problem 20. Majority Element ii
 // https://leetcode.com/problems/majority-element-ii/description/
