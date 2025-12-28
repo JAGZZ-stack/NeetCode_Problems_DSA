@@ -145,6 +145,45 @@ public:
 // TC : O(n)
 // SC : O(1)
 
+6. First Missing Positive
+// https://leetcode.com/problems/first-missing-positive/
+
+Input: nums = [1,2,0]
+Output: 3
+Explanation: The numbers in the range [1,2] are all in the array.
+
+// Approach : 
+// "Map the Value to the Index, then find the first misfit."
+
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        // Part 1: Place numbers in their correct "buckets"
+        for (int i = 0; i < nums.size(); i++) {
+            // Use a while loop because the swapped number 
+            // also needs to be placed correctly.
+            while (nums[i] > 0 && nums[i] <= nums.size() && nums[nums[i] - 1] != nums[i]) {
+                // Correct position for value x is index x-1
+                swap(nums[i], nums[nums[i] - 1]);
+            }
+        }
+
+        // Part 2: Scan for the first mismatch
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+
+        // Part 3: If all numbers 1 to n are present, return n + 1
+        return nums.size() + 1;
+    }
+};
+
+// TC : O(nums.size())
+// SC : O(1)
+
+
 Hashmap/Hashset Based Problems : 
 
 1. Contains Duplicates
@@ -722,100 +761,11 @@ public:
 // TC : O(n)
 // SC : O(n)
 
+Prefix Sum + Hashmap :
 
+1. Total subarrays with subarray Sum Equals K // (Assume the input might contain negative numbers also)
+// https://leetcode.com/problems/subarray-sum-equals-k/
 
-Problem 20. Majority Element ii
-// https://leetcode.com/problems/majority-element-ii/description/
-
-Input: nums = [3,2,3]
-Output: [3]
-    
-// Hashmap + Hashset Approach :
-// Convert Hashset to Array and return.
-// class Solution {
-// public:
-//     vector<int> majorityElement(vector<int>& nums) {
-//         unordered_map<int, int> map;
-//         set<int> result;
-
-//         for(int val : nums) {
-//             map[val]++;
-
-//             if(map[val] > nums.size()/3) {
-//                 result.insert(val);
-//             }
-//         } 
-//         return vector<int>(result.begin(), result.end());
-//     }
-// };
-
-// TC : O(nums.size())
-// SC : O(nums.size())
-
-// Space Optimised Approach : 
-// The Underlying Approach: (Elimination Logic)
-
-// -- The Boyer-Moore Majority Vote algorithm is based on a simple observation:
-
-// -- To find an element that appears more than 1/k times, you can at most have k-1 such elements.
-// For this specific problem (k=3), we seek elements appearing > n/3 times. There can be at most two such elements.
-
-class Solution {
-public:
-    vector<int> majorityElement(vector<int>& nums) {
-        int n = nums.size();
-        
-        // At most two elements can appear more than n/3 times.
-        // We initialize two candidates and two counters.
-        int cand1 = 0, cand2 = 1; 
-        int count1 = 0, count2 = 0;
-
-        // Phase 1: The Elimination Pass
-        for (int num : nums) {
-            if (num == cand1) {
-                count1++;
-            } else if (num == cand2) {
-                count2++;
-            } else if (count1 == 0) {
-                // If slot 1 is empty, current num becomes candidate 1
-                cand1 = num;
-                count1 = 1;
-            } else if (count2 == 0) {
-                // If slot 2 is empty, current num becomes candidate 2
-                cand2 = num;
-                count2 = 1;
-            } else {
-                // We found 3 distinct numbers (cand1, cand2, and current num).
-                // "Throw away" one instance of each by decrementing counts.
-                count1--;
-                count2--;
-            }
-        }
-
-        // Phase 2: The Verification Pass
-        // Boyer-Moore only guarantees that the majority elements (if they exist)
-        // will be the survivors. We must check if they actually meet the n/3 limit.
-        vector<int> result;
-        int verify1 = 0;
-        int verify2 = 0;
-
-        for (int num : nums) {
-            if (num == cand1) verify1++;
-            else if (num == cand2) verify2++;
-        }
-
-        if (verify1 > n / 3) result.push_back(cand1);
-        if (verify2 > n / 3) result.push_back(cand2);
-
-        return result;
-    }
-};
-
-// TC : O(n)
-// SC : O(1)
-
-Problem 21. Subarray Sum Equals K // (Assume the input might contain negative numbers also)
-// Prefix Sum + Hashmap
 class Solution {
 public:
     int subarraySum(vector<int>& nums, int k) {
@@ -841,40 +791,5 @@ public:
     }
 };
 
-Problem 2 : First Missing Positive
-// https://leetcode.com/problems/first-missing-positive/
-
-Input: nums = [1,2,0]
-Output: 3
-Explanation: The numbers in the range [1,2] are all in the array.
-
-// Approach : 
-// "Map the Value to the Index, then find the first misfit."
-
-class Solution {
-public:
-    int firstMissingPositive(vector<int>& nums) {
-        // Part 1: Place numbers in their correct "buckets"
-        for (int i = 0; i < nums.size(); i++) {
-            // Use a while loop because the swapped number 
-            // also needs to be placed correctly.
-            while (nums[i] > 0 && nums[i] <= nums.size() && nums[nums[i] - 1] != nums[i]) {
-                // Correct position for value x is index x-1
-                swap(nums[i], nums[nums[i] - 1]);
-            }
-        }
-
-        // Part 2: Scan for the first mismatch
-        for (int i = 0; i < nums.size(); i++) {
-            if (nums[i] != i + 1) {
-                return i + 1;
-            }
-        }
-
-        // Part 3: If all numbers 1 to n are present, return n + 1
-        return nums.size() + 1;
-    }
-};
-
-// TC : O(nums.size())
-// SC : O(1)
+// TC : O(n)
+// SC : O(n)
