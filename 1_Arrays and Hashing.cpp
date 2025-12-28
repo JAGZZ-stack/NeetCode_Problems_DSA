@@ -1,4 +1,6 @@
-Problem 1. Concatenation of Array.
+Simple Traversal Based Problems :
+
+1. Concatenation of Array.
 // https://leetcode.com/problems/concatenation-of-array/
 
 // Input: nums = [1,2,1]
@@ -21,7 +23,9 @@ public:
 // TC : O(nums.size())
 // SC : O(2 * nums.size()) // O(nums.size());
 
-Problem 2. Contains Duplicates
+Hashmap/Hashset Based Problems : 
+
+1. Contains Duplicates
 // https://leetcode.com/problems/contains-duplicate/description/
 
 // Input: nums = [1,2,3,1]
@@ -29,97 +33,126 @@ Problem 2. Contains Duplicates
 // Explanation:
 // The element 1 occurs at the indices 0 and 3.
 
-// class Solution {
-// public:
-//     bool containsDuplicate(vector<int>& nums) {
-//         unordered_map<int, int> freqMap;
-
-//         for(int i = 0; i < nums.size(); i++) {
-//             freqMap[nums[i]]++;
-//             if(freqMap[nums[i]] > 1) {
-//                 return true;
-//             }
-//         }
-//         return false;
-//     }
-// };
-
-// Recommended Approach (HashSet) :
+// Approach 1 : 
 class Solution {
 public:
-    bool containsDuplicate(vector<int>& nums) {
-        unordered_set<int> set;
+    bool hasDuplicate(vector<int>& nums) {
+        unordered_map<int, int> map;
 
-        for (int i = 0; i < nums.size(); i++) {
-            // Check if the current number is already in our set
-            if (set.count(nums[i])) {
+        for(int key : nums)
+            map[key]++;
+
+        for(auto const& entry  : map) {
+            if(entry.second > 1) 
                 return true;
-            }
-            // Add the current number to the set for future checks
-            set.insert(nums[i]);
         }
 
         return false;
     }
-};
+}; 
 
-TC : O(nums.size())
-SC : O(nums.size())
+// TC : O(nums.size())
+// SC : O(nums.size())
 
-Problem 3. Valid Anagram
+// Approach 2 :
+class Solution {
+public:
+    bool hasDuplicate(vector<int>& nums) {
+        unordered_map<int, int> map;
+
+        for(int i : nums) {
+            map[i]++;
+            if(map[i] > 1)
+                return true;
+        }
+        return false;
+    }
+}; 
+
+// TC : O(nums.size())
+// SC : O(nums.size())
+
+// Approach 3 : (Hashset)
+// Since we do only focus on if the element already exists, the usage of **hash set** is preferred.
+class Solution {
+public:
+    bool hasDuplicate(vector<int>& nums) {
+        unordered_set<int> set;
+
+        for(int i : nums) {
+            if(set.count(i))
+                return true;
+
+            set.insert(i);
+        }
+        return false;
+    }
+}; 
+
+// TC : O(nums.size())
+// SC : O(nums.size())
+
+2. Valid Anagram
 // https://leetcode.com/problems/valid-anagram/description/
 
 // Input: s = "anagram", t = "nagaram"
 // Output: true
 
-// Three important things to ensure a valid anagram:
-// -- Lengths should be equal
-// -- No characters should be uncommon
-// -- Counts should be the same
-
 class Solution {
 public:
     bool isAnagram(string s, string t) {
-        if (s.length() != t.length()) return false;
+        // Criteria 1 : The lengths should be the same
+        if(s.size() != t.size()) 
+            return false;
 
-        unordered_map<char, int> map;
-        for(char c : s) {
-            map[c]++;
-        }
-
-        int countDistinct = map.size();
+        // Criteria 2 : Total number of distinct elements and the cccurences of each distinct 
+        //              elements should be the same
+        unordered_map<char, int> count;
+        for(char c : s) 
+            count[c]++;
+        
+        int countDistinct = count.size(); // Very important setup
 
         for(char c : t) {
-            if(map.find(c) == map.end()) {
-                return false;
-            } else {
-                map[c]--;
-                if(map[c] == 0) countDistinct--;
+            if(count.find(c) != count.end()) {
+                count[c]--;
+                if(count[c] == 0) 
+                    countDistinct--;
             }
         }
+
         if(countDistinct == 0) return true;
         return false;
     }
 };
 
 // TC : O(s.size() + t.size())
-// SC : O(countDistinct)
+// SC : O(count.size())
 
-Problem 4. Two Sum (Returning the pair of indices)
+Problem 3. Two Sum (Returning the pair of indices)
 // https://leetcode.com/problems/two-sum/submissions/1862279977/
 
+// Brute Force Approach : 
+// Check for all possible/eligible pairs
+// TC : O(n^2), SC : O(1)
+
+// Optimised Approach Using Hashmap : 
+// Cue : Store each element with its index in the map.
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        unordered_map<int, int> map;
-        
-        for(int i = 0; i < nums.size(); i++) {
-            int remaining = target - nums[i];
+        unordered_map<int, int> map; // Store each element with its index in the map.
 
-            if(map.find(remaining) != map.end()) {
-                return {map[remaining], i};
+        for(int i = 0; i < nums.size(); i++) {
+            // Step 1 : For each element, find the need
+            int need = target - nums[i]; 
+
+            // Step 2 : Check if the need is present in the map and process accordingly
+            if(map.find(need) != map.end()) {
+                return {map[need], i};
             }
 
+            // Step 3 : 
             map[nums[i]] = i;
         }
         return {};
