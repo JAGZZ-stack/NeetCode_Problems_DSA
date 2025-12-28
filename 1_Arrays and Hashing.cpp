@@ -1,4 +1,4 @@
-Simple Traversal Based Problems :
+Array Traversal Problems :
 
 1. Concatenation of Array.
 // https://leetcode.com/problems/concatenation-of-array/
@@ -20,8 +20,8 @@ public:
     }
 }; 
 
-// TC : O(nums.size())
-// SC : O(2 * nums.size()) // O(nums.size());
+// TC : O(n)
+// SC : O(2 * n) // O(n);
 
 2. Longest Common Prefix
 // https://leetcode.com/problems/longest-common-prefix/description/
@@ -55,7 +55,7 @@ public:
     }
 };
 
-// TC : O(strs.size() * L);
+// TC : O(n * L);
 // SC : O(L); // Result substring's space
 
 3. Remove Element 
@@ -90,7 +90,7 @@ public:
     }
 };
 
-// TC : O(nums.size())
+// TC : O(n)
 // SC : O(1)
 
 Hashmap/Hashset Based Problems : 
@@ -121,8 +121,8 @@ public:
     }
 }; 
 
-// TC : O(nums.size())
-// SC : O(nums.size())
+// TC : O(n)
+// SC : O(n)
 
 // Approach 2 :
 class Solution {
@@ -139,8 +139,8 @@ public:
     }
 }; 
 
-// TC : O(nums.size())
-// SC : O(nums.size())
+// TC : O(n)
+// SC : O(n)
 
 // Approach 3 : (Hashset)
 // Since we do only focus on if the element already exists, the usage of **hash set** is preferred.
@@ -159,8 +159,8 @@ public:
     }
 }; 
 
-// TC : O(nums.size())
-// SC : O(nums.size())
+// TC : O(n)
+// SC : O(n)
 
 2. Valid Anagram
 // https://leetcode.com/problems/valid-anagram/description/
@@ -229,8 +229,29 @@ public:
     }
 };
 
-// TC : O(nums.size())
-// SC : O(nums.size())
+// TC : O(n)
+// SC : O(n)
+
+4. Majority Element (The element which appears more than n/2 times)
+// https://leetcode.com/problems/majority-element/
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        unordered_map<int, int> map;
+
+        for(int val : nums) {
+            map[val]++;
+            if(map[val] > nums.size()/2) {
+                return val;
+            }
+        }
+        return 0;
+    }
+};
+
+// TC : O(n)
+// SC : O(n)
 
 Sorting + Hashmap Based Problems : 
 
@@ -269,33 +290,6 @@ public:
 
 // TC : O(n * k log k)
 // SC : O(n * k) (Assuming total number of strings is n and each string has k characters)
-
-Problems 8. Majority Element (The element which appears more than n/2 times)
-// https://leetcode.com/problems/majority-element/
-
-class Solution {
-public:
-    int majorityElement(vector<int>& nums) {
-        unordered_map<int, int> map;
-
-        for(int val : nums) {
-            map[val]++;
-            if(map[val] > nums.size()/2) {
-                return val;
-            }
-        }
-        return 0;
-    }
-};
-
-// TC : O(nums.size())
-// SC : O(nums.size())
-
-// Revisit/study during Leisure time
-Problem 9 : Design HashMap // Rarely asked in interviews
-Problem 10 : Design HashSet // Rarely asked in interviews
-Problem 11 : Sort an array // Only study the STL inbuilt function as of now
-Problem 12 : Sort Colors // Only study the STL inbuilt function as of now
 
 Problem 13 : Top k frequent Elements
 // https://leetcode.com/problems/top-k-frequent-elements/submissions/1863622360/
