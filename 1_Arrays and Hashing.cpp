@@ -23,6 +23,76 @@ public:
 // TC : O(nums.size())
 // SC : O(2 * nums.size()) // O(nums.size());
 
+2. Longest Common Prefix
+// https://leetcode.com/problems/longest-common-prefix/description/
+
+// Input: strs = ["flower","flow","flight"]
+// Output: "fl"
+    
+// Solve this problem and the intuitive approach would be the optimised approach as well.
+
+// Optimised Approach : 
+// Memory Cue : Take the first string as a reference and perform the vertical scanning.
+
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        for(int i = 0; i < strs[0].size(); i++) {
+            char curr = strs[0][i];   // 0 - first string // 1 - ith char of that string
+
+            for(int j = 1; j < strs.size(); j++) {
+                // Case 1 : The moment when any of the string's length is smaller than the 
+                //          reference string's length
+                if(i >= strs[j].size()) 
+                    return strs[0].substr(0, i);
+
+                // Case 2 : Tracking the mismatch
+                if(curr != strs[j][i]) 
+                    return strs[0].substr(0, i);
+            }
+        }
+        return strs[0];
+    }
+};
+
+// TC : O(strs.size() * L);
+// SC : O(L); // Result substring's space
+
+3. Remove Element 
+// https://leetcode.com/problems/remove-element/
+
+Input: nums = [3,2,2,3], val = 3
+Output: 2, nums = [2,2,_,_]
+Explanation: Your function should return k = 2, with the first two elements of nums being 2.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+
+// Two Requirements :
+// -- Array should be modified in such a way that the first k elements do not contain the "val"
+// -- Return total number of "non-val" elements.
+
+// Approach :
+// Two Pointers 
+// (i -> representing the index where the next non-target element should be placed)
+// (j -> for array traversal)
+
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int i = 0;
+
+        for(int j = 0; j < nums.size(); j++) {
+            if(nums[j] != val) {
+                nums[i] = nums[j];
+                i++; // Update i - most important
+            }
+        }
+        return i;
+    }
+};
+
+// TC : O(nums.size())
+// SC : O(1)
+
 Hashmap/Hashset Based Problems : 
 
 1. Contains Duplicates
@@ -162,84 +232,24 @@ public:
 // TC : O(nums.size())
 // SC : O(nums.size())
 
-Problem 5. Longest Common Prefix
-// https://leetcode.com/problems/longest-common-prefix/description/
+Sorting + Hashmap Based Problems : 
 
-// Input: strs = ["flower","flow","flight"]
-// Output: "fl"
-    
-// Vertical scanning Approach :
-// -- Take the first string as a reference.
-// -- Compare characters column-wise, stop at the first mismatch.
-
-class Solution {
-public:
-    string longestCommonPrefix(vector<string>& strs) {
-        for(int i = 0; i < strs[0].size(); i++) {
-            char curr = strs[0][i]; // 0 - first string. 
-                                    // 1 - ith char of that string
-
-            for(int j = 1; j < strs.size(); j++) {
-                // Case 1 : If i is greater than the current string length.
-                if(i >= strs[j].size()) {
-                    return strs[0].substr(0, i);
-                }
-
-                // Case 2 : If the characters do not match.
-                if(curr != strs[j][i]) {
-                    return strs[0].substr(0, i);
-                }
-            }
-        }
-        return strs[0];
-    }
-};
-
-// TC : O(strs[0].size() * strs.size());
-// SC : O(1)
-
-Problem 6. Remove Element - LeetCode
-https://leetcode.com/problems/remove-element/submissions/1863586727/
-
-// Two Requirements :
-// -- Array should be modified in such a way that the first k elements do not contain the "val"
-// -- Return total number of "non-val" elements.
-
-// Approach :
-// Two Pointers 
-// (i -> representing the index where the next non-target element should be placed)
-// (j -> for array traversal)
-
-class Solution {
-public:
-    int removeElement(vector<int>& nums, int val) {
-        int i = 0;
-
-        for(int j = 0; j < nums.size(); j++) {
-            if(nums[j] != val) {
-                nums[i] = nums[j];
-                i++;
-            }
-        }
-        return i;
-    }
-};
-
-// TC : O(nums.size())
-// SC : O(1)
-
-Problem 7. Group Anagrams
+1. Group Anagrams
 // https://leetcode.com/problems/group-anagrams/
 
 // Input: strs = ["eat","tea","tan","ate","nat","bat"]
 // Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
 
 // CUE : Group of Anagrams = Hashmap[sort[word]]
+// Sorting + Hashmap Idea : 
+// Group Anagrams : Hashmap[sort[word];
+
 class Solution {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
         unordered_map<string, vector<string>> map;
 
+        // Sort and store the (sorted, actual) in the Hashmap
         for(string s : strs) {
             string word = s;
             sort(word.begin(), word.end());
@@ -247,10 +257,10 @@ public:
             map[word].push_back(s);
         }
 
-        vector<vector<string>> result;
+        vector<vector<string>> result; // Resultant array
 
-        for(auto it : map) {
-            result.push_back(it.second);
+        for(auto const& value : map) {
+            result.push_back(value.second);
         }
 
         return result;
