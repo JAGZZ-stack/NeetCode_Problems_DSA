@@ -93,6 +93,58 @@ public:
 // TC : O(n)
 // SC : O(1)
 
+4. Best time to Buy and sell stock i
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
+
+// Cue : 
+// If I sell the stock at each element/point, calculate the profit
+// Return the maxProfit
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int minPrice = prices[0];
+        int maxProfit = 0;
+
+        for(int i = 0; i < prices.size(); i++) {
+            if(prices[i] - minPrice > maxProfit) 
+                maxProfit =  prices[i] - minPrice;
+            if(prices[i] < minPrice)
+                minPrice = prices[i];    
+        }
+        return maxProfit;
+    }
+};
+
+// TC : O(n)
+// SC : O(1)
+
+5. Best time to Buy and sell stock ii
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/submissions/1867834024/
+
+Input: prices = [7,1,5,3,6,4]
+Output: 7
+Explanation: Buy on day 2 (price = 1) and sell on day 3 (price = 5), profit = 5-1 = 4.
+Then buy on day 4 (price = 3) and sell on day 5 (price = 6), profit = 6-3 = 3.
+Total profit is 4 + 3 = 7.
+    
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int totalProfit = 0;
+
+        // Handle out of bounds
+        for(int i = 1; i < prices.size(); i++) {
+            if(prices[i] > prices[i-1])
+                totalProfit += prices[i] - prices[i-1];
+        }
+        return totalProfit;
+    }
+};
+
+// TC : O(n)
+// SC : O(1)
+
 Hashmap/Hashset Based Problems : 
 
 1. Contains Duplicates
@@ -346,6 +398,96 @@ public:
 //      O(N) (for 'while' loop as while loop runs only N times across the entire program)
 
 // SC : O(N)
+
+7. Majority Element ii
+// https://leetcode.com/problems/majority-element-ii/description/
+
+Input: nums = [3,2,3]
+Output: [3]
+    
+// Hashmap + Hashset Approach :
+// Convert Hashset to Array and return.
+// class Solution {
+// public:
+//     vector<int> majorityElement(vector<int>& nums) {
+//         unordered_map<int, int> map;
+//         set<int> result;
+
+//         for(int val : nums) {
+//             map[val]++;
+
+//             if(map[val] > nums.size()/3) {
+//                 result.insert(val);
+//             }
+//         } 
+//         return vector<int>(result.begin(), result.end());
+//     }
+// };
+
+// TC : O(nums.size())
+// SC : O(nums.size())
+
+// Space Optimised Approach : 
+// The Underlying Approach: (Elimination Logic)
+
+// -- The Boyer-Moore Majority Vote algorithm is based on a simple observation:
+
+// -- To find an element that appears more than 1/k times, you can at most have k-1 such elements.
+// For this specific problem (k=3), we seek elements appearing > n/3 times. There can be at most two such elements.
+
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        int n = nums.size();
+        
+        // At most two elements can appear more than n/3 times.
+        // We initialize two candidates and two counters.
+        int cand1 = 0, cand2 = 1; 
+        int count1 = 0, count2 = 0;
+
+        // Phase 1: The Elimination Pass
+        for (int num : nums) {
+            if (num == cand1) {
+                count1++;
+            } else if (num == cand2) {
+                count2++;
+            } else if (count1 == 0) {
+                // If slot 1 is empty, current num becomes candidate 1
+                cand1 = num;
+                count1 = 1;
+            } else if (count2 == 0) {
+                // If slot 2 is empty, current num becomes candidate 2
+                cand2 = num;
+                count2 = 1;
+            } else {
+                // We found 3 distinct numbers (cand1, cand2, and current num).
+                // "Throw away" one instance of each by decrementing counts.
+                count1--;
+                count2--;
+            }
+        }
+
+        // Phase 2: The Verification Pass
+        // Boyer-Moore only guarantees that the majority elements (if they exist)
+        // will be the survivors. We must check if they actually meet the n/3 limit.
+        vector<int> result;
+        int verify1 = 0;
+        int verify2 = 0;
+
+        for (int num : nums) {
+            if (num == cand1) verify1++;
+            else if (num == cand2) verify2++;
+        }
+
+        if (verify1 > n / 3) result.push_back(cand1);
+        if (verify2 > n / 3) result.push_back(cand2);
+
+        return result;
+    }
+};
+
+// TC : O(n)
+// SC : O(1)
 
 Sorting + Hashmap Based Problems : 
 
