@@ -291,74 +291,52 @@ public:
 // TC : O(n * k log k)
 // SC : O(n * k) (Assuming total number of strings is n and each string has k characters)
 
-Problem 13 : Top k frequent Elements
+Hashmap + Pair + Sorting 
+
+1 : Top k frequent Elements
 // https://leetcode.com/problems/top-k-frequent-elements/submissions/1863622360/
 
 // Input: nums = [1,1,1,2,2,3], k = 2
 // Output: [1,2]
 
 // Cue : "Map the count, flip the pair, sort the air."
+// The intuitive approach that you would get is the optimsed approach as well.
+
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
+        // Step 1 : Build the frequency map
         unordered_map<int, int> map;
         for(int val : nums) {
             map[val]++;
         }
 
-        vector<pair<int, int>> arr;
-        for (const auto& p : map) {
-            arr.push_back({p.second, p.first});
+        // Step 2 : Transfer the data to the vector of pairs and sort in the descending order
+        vector<pair<int, int>> pair;
+        for(auto const& val : map) {
+            pair.emplace_back(val.second, val.first);
         }
 
-        sort(arr.rbegin(), arr.rend());
+        sort(pair.rbegin(), pair.rend());
 
-        vector<int> res;
-        for (int i = 0; i < k; ++i) {
-            res.push_back(arr[i].second);
+        // Store top k frequent elements in the result vector
+        vector<int> result;
+        for(int i = 0; i < k; i++) {
+            result.push_back(pair[i].second);
         }
-        return res;    
+
+        return result;
     }
 };
 
-// TC : O(n log n)
+// TC : O(n + n log n) // TC : O(n log n)
 // SC : O(n)
 
-Problem 14 : Encode and Decode Strings
+Prefix Sum Problems :
 
-class Solution {
-public:
-    string encode(vector<string>& strs) {
-        string res;
-        for(string s : strs) {
-            for(char c : s) {
-                res.push_back(c);
-            }
-            res.push_back((char)0xFFFFFF);
-        }
-        return res;
-    } // TC : O(strs.size() * k) // SC : O(1)
-    
-    vector<string> decode(string s) {
-        vector<string> res;
-        string curr;
-
-        for(char c : s) {
-            if(c == (char)0xFFFFFF) {
-                res.push_back(curr);
-                curr = {};
-            } else {
-                curr.push_back(c);
-            }
-        }
-        return res;
-    } // TC : O(s.size()) // SC : O(s.size())
-};
-
-======================================================================================================================
-// Prefix Sum and Difference Array concepts.
+// Prefix Sum and Difference Array concepts for 1D Array 
 void prefixSum(const vector<int>& nums, int k) {
-    vector<int> prefixSum(nums.size());
+    vector<int> prefixSum(nums.size()); // While constructing prefixSums, be sure to declare the vector with the size.
     
     prefixSum[0] = nums[0];
     for(int i = 1; i < nums.size(); i++) {
@@ -373,7 +351,8 @@ void prefixSum(const vector<int>& nums, int k) {
         if(l > 0) 
             subarraySum -= prefixSum[l-1];
     }
-} // TC : O(N), SC : O(1)
+    return subarraySum;
+} // TC : O(N), SC : O(N)
 
 void differenceArray(const vector<int>& nums, int k, int x) {
     vector<int> differenceArray(nums.size());
@@ -407,8 +386,9 @@ void differenceArray(const vector<int>& nums, int k, int x) {
     cout << endl;
 } // TC : O(N + K); SC : O(N)
 
-=========================================================================================================================
-Problem 15. Range Sum Query 2D Immutable 
+
+1. Range Sum Query 2D Immutable 
+// https://leetcode.com/problems/range-sum-query-2d-immutable/
 
 class NumMatrix {
 private:
@@ -456,7 +436,7 @@ public:
 // Queries (Time) : O(1)
 // (Space) : O(rows * columns)
 
-Problem 16. Product of Array Except Self
+2. Product of Array Except Self
 
 // Brute Force Approach : (Only works if no input number is 0)
 
@@ -503,8 +483,8 @@ public:
     }
 };
 
-// TC : O(nums.size())
-// SC : O(1)
+// TC : O(n)
+// SC : O(n)
 
 Problem 18. Longest Consecutive Sequence
 // Input: nums = [100,4,200,1,3,2]
