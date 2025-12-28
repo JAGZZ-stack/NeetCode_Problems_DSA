@@ -199,7 +199,7 @@ public:
 // TC : O(s.size() + t.size())
 // SC : O(count.size())
 
-Problem 3. Two Sum (Returning the pair of indices)
+3. Two Sum (Returning the pair of indices)
 // https://leetcode.com/problems/two-sum/submissions/1862279977/
 
 // Brute Force Approach : 
@@ -252,6 +252,56 @@ public:
 
 // TC : O(n)
 // SC : O(n)
+
+5. Valid Sudoku
+// https://leetcode.com/problems/valid-sudoku/
+
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        // rows[i]   → numbers already seen in row i
+        // cols[j]   → numbers already seen in column j
+        // boxes[k]  → numbers already seen in box k
+        vector<unordered_set<char>> rows(9);
+        vector<unordered_set<char>> cols(9);
+        vector<unordered_set<char>> boxes(9);
+
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
+                char curr = board[i][j];
+
+                // Step 1: Ignore empty cells
+                if(curr == '.')
+                    continue;
+
+                // Step 2: Calculate box index
+                // Each 3x3 box is numbered from 0 to 8
+                //
+                // (i / 3) gives box row
+                // (j / 3) gives box column
+                //
+                // Example:
+                // i = 4, j = 7
+                // boxRow = 4 / 3 = 1
+                // boxCol = 7 / 3 = 2
+                // boxIndex = 1 * 3 + 2 = 5
+                int boxIndex = (i/3) * 3 + (j/3);
+
+                // Step 3 : Check if that char already exists
+                if(rows[i].count(curr) || cols[j].count(curr) || (boxes[boxIndex].count(curr))) 
+                    return false;
+
+                rows[i].insert(curr);
+                cols[j].insert(curr);
+                boxes[boxIndex].insert(curr);    
+            }
+        }
+        return true;
+    }
+};
+
+// TC : O(rows * columns)
+// SC : O(rows * columns)
 
 Sorting + Hashmap Based Problems : 
 
