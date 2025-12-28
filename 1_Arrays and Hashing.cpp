@@ -181,6 +181,11 @@ public:
 };
 
 // TC : O(nums.size())
+// First Principles Proof:
+// Every time a swap occurs, at least one number is placed into its final correct position. 
+// Once a number is in its correct position, it is never moved again. Since there are only n numbers, 
+// there can be at most $N$ swaps across the entire execution of the program. 
+// Therefore, the total complexity remains $O(N)$.
 // SC : O(1)
 
 
