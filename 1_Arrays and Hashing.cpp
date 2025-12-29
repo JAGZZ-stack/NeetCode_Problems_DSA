@@ -83,7 +83,8 @@ public:
         for(int j = 0; j < nums.size(); j++) {
             if(nums[j] != val) {
                 nums[i] = nums[j];
-                i++; // Update i - most important
+                i++; // Update i - most important. This also takes care of the 0-based index confusion at the time of 
+                     // returning the result.
             }
         }
         return i;
@@ -171,12 +172,12 @@ public:
         // Part 2: Scan for the first mismatch
         for (int i = 0; i < nums.size(); i++) {
             if (nums[i] != i + 1) {
-                return i + 1;
+                return i + 1; // Do not return nums[i]
             }
         }
 
         // Part 3: If all numbers 1 to n are present, return n + 1
-        return nums.size() + 1;
+        return nums.size() + 1; // Be careful.
     }
 };
 
@@ -284,6 +285,8 @@ public:
                 count[c]--;
                 if(count[c] == 0) 
                     countDistinct--;
+            } else {
+                return false;
             }
         }
 
@@ -349,101 +352,7 @@ public:
 // TC : O(n)
 // SC : O(n)
 
-5. Valid Sudoku
-// https://leetcode.com/problems/valid-sudoku/
-
-class Solution {
-public:
-    bool isValidSudoku(vector<vector<char>>& board) {
-        // rows[i]   → numbers already seen in row i
-        // cols[j]   → numbers already seen in column j
-        // boxes[k]  → numbers already seen in box k
-        vector<unordered_set<char>> rows(9);
-        vector<unordered_set<char>> cols(9);
-        vector<unordered_set<char>> boxes(9);
-
-        for(int i = 0; i < 9; i++) {
-            for(int j = 0; j < 9; j++) {
-                char curr = board[i][j];
-
-                // Step 1: Ignore empty cells
-                if(curr == '.')
-                    continue;
-
-                // Step 2: Calculate box index
-                // Each 3x3 box is numbered from 0 to 8
-                //
-                // (i / 3) gives box row
-                // (j / 3) gives box column
-                //
-                // Example:
-                // i = 4, j = 7
-                // boxRow = 4 / 3 = 1
-                // boxCol = 7 / 3 = 2
-                // boxIndex = 1 * 3 + 2 = 5
-                int boxIndex = (i/3) * 3 + (j/3);
-
-                // Step 3 : Check if that char already exists
-                if(rows[i].count(curr) || cols[j].count(curr) || (boxes[boxIndex].count(curr))) 
-                    return false;
-
-                rows[i].insert(curr);
-                cols[j].insert(curr);
-                boxes[boxIndex].insert(curr);    
-            }
-        }
-        return true;
-    }
-};
-
-// TC : O(rows * columns)
-// SC : O(rows * columns)
-
-6. Longest Consecutive Sequence
-// https://leetcode.com/problems/longest-consecutive-sequence/
-
-Input: nums = [100,4,200,1,3,2]
-Output: 4
-Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
-
-// Brute Force Approach :
-// Consider each number as a start of the sequence, calculate the sequence length and return the longest.
-
-// Optimised Approach (Hashset) :
-// Cue - currNum and currStreak
-class Solution {
-public:
-    int longestConsecutive(vector<int>& nums) {
-        // Step 1: Build the set for O(1) lookups
-        unordered_set<int> set(nums.begin(), nums.end()); // This set stores every unique number from the input array
-
-        int longest = 0;
-        for(int num : set) {
-            // Only proceed if that number is the start of the sequence
-            if(!set.count(num-1)) {
-                int currNum = num;
-                int currentStreak = 1;
-
-                while (set.count(currNum + 1)) {
-                    currNum += 1;
-                    currentStreak += 1;
-                }
-
-                longest = max(longest, currentStreak);
-            } // else skip it as that number is not the start of the sequence.
-
-        }
-        return longest;
-    }
-};
-
-// TC : O(N) (for set creation) + 
-//      O(N) (for 'for' loop) + 
-//      O(N) (for 'while' loop as while loop runs only N times across the entire program)
-
-// SC : O(N)
-
-7. Majority Element ii
+5. Majority Element ii
 // https://leetcode.com/problems/majority-element-ii/description/
 
 Input: nums = [3,2,3]
@@ -532,6 +441,101 @@ public:
 
 // TC : O(n)
 // SC : O(1)
+
+6. Valid Sudoku
+// https://leetcode.com/problems/valid-sudoku/
+
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        // rows[i]   → numbers already seen in row i
+        // cols[j]   → numbers already seen in column j
+        // boxes[k]  → numbers already seen in box k
+        vector<unordered_set<char>> rows(9);
+        vector<unordered_set<char>> cols(9);
+        vector<unordered_set<char>> boxes(9);
+
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
+                // Step 1 : Calculate box index
+                // Each 3x3 box is numbered from 0 to 8
+                //
+                // (i / 3) gives box row
+                // (j / 3) gives box column
+                //
+                // Example:
+                // i = 4, j = 7
+                // boxRow = 4 / 3 = 1
+                // boxCol = 7 / 3 = 2
+                // boxIndex = 1 * 3 + 2 = 5
+                int boxIndex = (i/3) * 3 + (j/3);
+
+                
+                char curr = board[i][j];
+
+                // Step 2: Ignore empty cells
+                if(curr == '.')
+                    continue;
+
+                // Step 3 : Check if that char already exists
+                if(rows[i].count(curr) || cols[j].count(curr) || (boxes[boxIndex].count(curr))) 
+                    return false;
+
+                rows[i].insert(curr);
+                cols[j].insert(curr);
+                boxes[boxIndex].insert(curr);    
+            }
+        }
+        return true;
+    }
+};
+
+// TC : O(rows * columns)
+// SC : O(9 * 9) + O(9 * 9) + O(9 * 9). // O(9 * 9)
+
+7. Longest Consecutive Sequence
+// https://leetcode.com/problems/longest-consecutive-sequence/
+
+Input: nums = [100,4,200,1,3,2]
+Output: 4
+Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
+
+// Brute Force Approach :
+// Consider each number as a start of the sequence, calculate the sequence length and return the longest.
+
+// Optimised Approach (Hashset) :
+// Cue - currNum and currStreak
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        // Step 1: Build the set for O(1) lookups
+        unordered_set<int> set(nums.begin(), nums.end()); // This set stores every unique number from the input array
+
+        int longest = 0;
+        for(int num : set) {
+            // Only proceed if that number is the start of the sequence
+            if(!set.count(num-1)) {
+                int currNum = num;
+                int currentStreak = 1;
+
+                while (set.count(currNum + 1)) {
+                    currNum += 1;
+                    currentStreak += 1;
+                }
+
+                longest = max(longest, currentStreak);
+            } // else skip it as that number is not the start of the sequence.
+
+        }
+        return longest;
+    }
+};
+
+// TC : O(N) (for set creation) + 
+//      O(N) (for 'for' loop) + 
+//      O(N) (for 'while' loop as while loop runs only N times across the entire program)
+
+// SC : O(N)
 
 Sorting + Hashmap Based Problems : 
 
