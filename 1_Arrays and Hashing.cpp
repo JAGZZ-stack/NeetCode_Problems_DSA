@@ -606,7 +606,7 @@ public:
         // Store top k frequent elements in the result vector
         vector<int> result;
         for(int i = 0; i < k; i++) {
-            result.push_back(pair[i].second);
+            result.push_back(pair[i].second); // Error Prone Syntax. Be clear.
         }
 
         return result;
